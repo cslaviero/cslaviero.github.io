@@ -10,10 +10,11 @@
 <p>My first paragraph.</p>
 
 </body>
-<button type='button' onclick='click_me();' value='Click Me'>Click it</button>
+<button type='button' id='submit_button' value='Click Me'>Click it</button>
 <script>
 
 // Get query variables
+
 function getQueryParam(variable, defaultValue) {
   // Find all URL parameters
   var query = location.search.substring(1);
@@ -29,18 +30,21 @@ function getQueryParam(variable, defaultValue) {
   return defaultValue || false;
 }
 
+var submitButton = document.getElementById('submit_button');
+submitButton.addEventListener('click', function() {
+  // Some example configuration values
+  var config = {
+    'animSetting': true,
+    'tickSetting': 'seconds',
+    'bgColor': 'red'
+  };
 
-
-var click_me = function(){ 
-  // Close config page and return data
-  //location.href = 'pebblejs://close#success';
-  
-      // Set the return URL depending on the runtime environment
-    var return_to = getQueryParam('return_to', 'pebblejs://close#');
-    document.location = return_to + encodeURIComponent(JSON.stringify(some_settings));
-
-  
-};
+  // Return data to watchapp
+  var return_to = getQueryParam('return_to', 'pebblejs://close#');
+    document.location = return_to + encodeURIComponent(JSON.stringify(config));
+  //location.href = 'pebblejs://close#' +  encodeURIComponent(JSON.stringify(config));
+    
+});
 
 </script>
 
