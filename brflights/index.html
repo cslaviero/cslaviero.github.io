@@ -6,10 +6,12 @@
 
 <body>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<h1>Brazil Flights</h1>
+<p>It's just a config page..</p>
 
 </body>
+<input type='text' id='icao'></input>
+<input type='numeroVoo' id='icao'></input>
 <button type='button' id='submit_button' value='Click Me'>Click it</button>
 <script>
 
@@ -34,8 +36,8 @@ var submitButton = document.getElementById('submit_button');
 submitButton.addEventListener('click', function() {
   // Some example configuration values
   var config = {
-    'numeroVoo': '4008',
-    'icao': 'SBRJ',
+    'numeroVoo': document.getElementById('numeroVoo').innerHTML,
+    'icao': document.getElementById('icao').innerHTML,
   };
 
   // Return data to watchapp
