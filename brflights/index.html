@@ -11,7 +11,7 @@
 <p>
 ICAO: <input type='text' id='icao'></input><br>
 Numero do voo: <input type='text' id='numeroVoo'></input><br>
-<button type='button' id='submit_button' value='Click Me'>Click it</button>
+<button type='button' id='submit_button' value='Click Me'>Save to Watch!</button>
 
 </p>
 </body>
@@ -19,7 +19,6 @@ Numero do voo: <input type='text' id='numeroVoo'></input><br>
 <script>
 
 // Get query variables
-
 function getQueryParam(variable, defaultValue) {
   // Find all URL parameters
   var query = location.search.substring(1);
@@ -34,17 +33,22 @@ function getQueryParam(variable, defaultValue) {
   return defaultValue || false;
 }
 
+document.getElementById('numeroVoo').value = getQueryParam('numeroVoo','');
+document.getElementById('icao').value = getQueryParam('icao','');
+
+
 var submitButton = document.getElementById('submit_button');
 submitButton.addEventListener('click', function() {
   // Some example configuration values
   var config = {
-    'numeroVoo': document.getElementById('numeroVoo').innerHTML,
-    'icao': document.getElementById('icao').innerHTML,
+    'numeroVoo': document.getElementById('numeroVoo').value,
+    'icao': document.getElementById('icao').value,
   };
 
   // Return data to watchapp
-  var return_to = getQueryParam('return_to', 'pebblejs://close#');
-    document.location = return_to + encodeURIComponent(JSON.stringify(config));
+  // return_to is a command to tell to which page to return to.
+    var return_to = getQueryParam('return_to', 'pebblejs://close#');
+  document.location = return_to + encodeURIComponent(JSON.stringify(config));
   //location.href = 'pebblejs://close#' +  encodeURIComponent(JSON.stringify(config));
     
 });
