@@ -9,9 +9,10 @@
 <h1>Brazil Flights</h1>
 <p>It's just a config page..</p>
 <p>
-<input type='text' id='icao'></input>
-<input type='numeroVoo' id='icao'></input>
+ICAO: <input type='text' id='icao'></input><br>
+Numero do voo: <input type='text' id='numeroVoo'></input><br>
 <button type='button' id='submit_button' value='Click Me'>Click it</button>
+
 </p>
 </body>
 
@@ -25,7 +26,6 @@ function getQueryParam(variable, defaultValue) {
   var vars = query.split('&');
   for (var i = 0; i < vars.length; i++) {
     var pair = vars[i].split('=');
-
     // If the query variable parameter is found, decode it to use and return it for use
     if (pair[0] === variable) {
       return decodeURIComponent(pair[1]);
