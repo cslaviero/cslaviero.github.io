@@ -20,7 +20,7 @@
   <div class="item-container-content">
     <label class="item">
       <div class="item-input-wrapper">
-        <input id='k' type="text" class="item-input" name="input-1">
+        <input id='dbkey' type="text" class="item-input" name="input-1">
       </div>
     </label>
   </div>
@@ -61,7 +61,7 @@ function getQueryParam(variable, defaultValue) {
   return defaultValue || false;
 }
 
-document.getElementById('k').value = getQueryParam('k','');
+document.getElementById('dbkey').value = getQueryParam('dbkey','');
 document.getElementById('trigger').value = getQueryParam('trigger','');
 
 
@@ -69,7 +69,7 @@ var submitButton = document.getElementById('submit_button');
 submitButton.addEventListener('click', function() {
   // Some example configuration values
   var config = {
-    'k': document.getElementById('k').value,
+    'dbkey': document.getElementById('dbkey').value,
     'trigger': document.getElementById('trigger').value,
   };
 
