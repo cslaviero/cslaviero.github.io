@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src= 'js/slate.min.js'></script>
+  <link rel="stylesheet" type="text/css" href="css/slate.min.css">
+</head>
+
+<body>
+
+<div class="item-container">
+  <div class="item-container-content">
+    <div class="item">
+      <p>It's just a config page...</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="item-container">
+  <div class="item-container-header">ICAO</div>
+  <div class="item-container-content">
+    <label class="item">
+      <div class="item-input-wrapper">
+        <input id='icao' type="text" class="item-input" name="input-1" placeholder="ABCD">
+      </div>
+    </label>
+  </div>
+  <div class="item-container-footer">
+    SBRJ - Rio de Janeiro<br>
+    SBKP - Campinas<br>
+    SBRD - Roo (not available)
+  </div>
+</div>
+<div class="item-container">
+  <div class="item-container-header">Numero Voo</div>
+  <div class="item-container-content">
+    <label class="item">
+      <div class="item-input-wrapper">
+        <input  id='numeroVoo' type="text" class="item-input" name="input-1" placeholder="ABCD">
+      </div>
+    </label>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="button-container">
+    <input type="button" id='submit_button' class="item-button" value="Enviar">
+  </div>
+</div>
+
+</body>
+
+<script>
+
+// Get query variables
+function getQueryParam(variable, defaultValue) {
+  // Find all URL parameters
+  var query = location.search.substring(1);
+  var vars = query.split('&');
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    // If the query variable parameter is found, decode it to use and return it for use
+    if (pair[0] === variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  return defaultValue || false;
+}
+
+document.getElementById('numeroVoo').value = getQueryParam('numeroVoo','');
+document.getElementById('icao').value = getQueryParam('icao','');
+
+
+var submitButton = document.getElementById('submit_button');
+submitButton.addEventListener('click', function() {
+  // Some example configuration values
+  var config = {
+    'numeroVoo': document.getElementById('numeroVoo').value,
+    'icao': document.getElementById('icao').value,
+  };
+
+  // Return data to watchapp
+  // return_to is a command to tell to which page to return to.
+    var return_to = getQueryParam('return_to', 'pebblejs://close#');
+  document.location = return_to + encodeURIComponent(JSON.stringify(config));
+  //location.href = 'pebblejs://close#' +  encodeURIComponent(JSON.stringify(config));
+    
+});
+
+</script>
+
+</html>
