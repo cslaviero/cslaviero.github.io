@@ -10,33 +10,27 @@
 <div class="item-container">
   <div class="item-container-content">
     <div class="item">
-      <p>It's just a config page...</p>
+      <p>Config your SaveIt!</p>
     </div>
   </div>
 </div>
 
-
 <div class="item-container">
-  <div class="item-container-header">ICAO</div>
+  <div class="item-container-header">Dropbox Key</div>
   <div class="item-container-content">
     <label class="item">
       <div class="item-input-wrapper">
-        <input id='icao' type="text" class="item-input" name="input-1" placeholder="ABCD">
+        <input id='key' type="text" class="item-input" name="input-1">
       </div>
     </label>
   </div>
-  <div class="item-container-footer">
-    SBRJ - Rio de Janeiro<br>
-    SBKP - Campinas<br>
-    SBRD - Roo (not available)
-  </div>
 </div>
 <div class="item-container">
-  <div class="item-container-header">Numero Voo</div>
+  <div class="item-container-header">Trigger Name</div>
   <div class="item-container-content">
     <label class="item">
       <div class="item-input-wrapper">
-        <input  id='numeroVoo' type="text" class="item-input" name="input-1" placeholder="ABCD">
+        <input  id='trigger' type="text" class="item-input" name="input-1">
       </div>
     </label>
   </div>
@@ -67,16 +61,16 @@ function getQueryParam(variable, defaultValue) {
   return defaultValue || false;
 }
 
-document.getElementById('numeroVoo').value = getQueryParam('numeroVoo','');
-document.getElementById('icao').value = getQueryParam('icao','');
+document.getElementById('key').value = getQueryParam('key','');
+document.getElementById('trigger').value = getQueryParam('trigger','');
 
 
 var submitButton = document.getElementById('submit_button');
 submitButton.addEventListener('click', function() {
   // Some example configuration values
   var config = {
-    'numeroVoo': document.getElementById('numeroVoo').value,
-    'icao': document.getElementById('icao').value,
+    'key': document.getElementById('key').value,
+    'trigger': document.getElementById('trigger').value,
   };
 
   // Return data to watchapp
