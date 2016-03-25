@@ -43,6 +43,17 @@
 </div>
 
 <div class="item-container">
+  <div class="item-container-header">Code</div>
+  <div class="item-container-content">
+    <label class="item">
+      <div class="item-input-wrapper">
+        <input  id='qrcode' type="text" class="item-input" name="input-1" placeholder="It's a long code.">
+      </div>
+    </label>
+  </div>
+</div>
+
+<div class="item-container">
   <div class="button-container">
     <input type="button" id='submit_button' class="item-button" value="Enviar">
   </div>
@@ -67,17 +78,52 @@ function getQueryParam(variable, defaultValue) {
   return defaultValue || false;
 }
 
+//get from query the values (if any)
 document.getElementById('numeroVoo').value = getQueryParam('numeroVoo','');
 document.getElementById('icao').value = getQueryParam('icao','');
+//document.getElementById('qrcode').value = getQueryParam('qrcode','');
 
+var icao = {
+  'SDU':'SBRJ'
+  'GRU':'SBGR',
+  'BSB':'SBBR',
+  'CGB':SBCY'
+};
+var config; 
 
 var submitButton = document.getElementById('submit_button');
 submitButton.addEventListener('click', function() {
   // Some example configuration values
-  var config = {
+  
+  var qrcode = document.getElementById('qrcode').value;
+  if(qrcode !=''){ 
+   // get the values
+   // flight direction 
+   //M1SLAVIERO/CLEYTON     LBIMJW SDUGRUAD 2403 085Y011A0047 147>1181226084BAD 000000000000029577001529534600      5640024474         0
+  
+  var qrsplit = qrcode.split(" ");
+  var from = qrsplit[6].substring(0,3);
+  var to = qrsplit[6].substring(3,6);
+  var dir = from+">"+to;
+  var numeroVoo = qrsplit[7];
+  var seat = qrsplit[8].substring(4,8);
+  var seq = qrsplit[8].substring(9,12);
+  
+  config = { 'dir':dir,
+              'numeroVoo':numeroVoo,
+              'seat':seat,
+              'seq':seq,
+              'icao':icao[from];
+  } ;
+  
+  } else{
+
+  config = {
     'numeroVoo': document.getElementById('numeroVoo').value,
     'icao': document.getElementById('icao').value,
   };
+  
+  } 
 
   // Return data to watchapp
   // return_to is a command to tell to which page to return to.
