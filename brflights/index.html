@@ -101,13 +101,24 @@ submitButton.addEventListener('click', function() {
    // flight direction 
    //M1SLAVIERO/CLEYTON     LBIMJW SDUGRUAD 2403 085Y011A0047 147>1181226084BAD 000000000000029577001529534600      5640024474         0
   
-  var qrsplit = qrcode.split(" ");
-  var from = qrsplit[6].substring(0,3);
-  var to = qrsplit[6].substring(3,6);
+  
+  var split = qrcode.split(" ");
+  var qrsplit = [];
+  var iRes=0;
+  for(var i=0;i<split.length;i++){
+  	if (split[i]!=""){
+  		res[iRes]= split[i];
+  		iRes++;
+  	}
+  }
+  
+  //var qrsplit = qrcode.split(" ");
+  var from = qrsplit[2].substring(0,3);
+  var to = qrsplit[2].substring(3,6);
   var dir = from+">"+to;
-  var numeroVoo = qrsplit[7];
-  var seat = qrsplit[8].substring(4,8);
-  var seq = qrsplit[8].substring(9,12);
+  var numeroVoo = qrsplit[3];
+  var seat = qrsplit[4].substring(4,8);
+  var seq = qrsplit[4].substring(9,12);
   
   config = { 'dir':dir,
               'numeroVoo':numeroVoo,
