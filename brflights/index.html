@@ -102,36 +102,39 @@ submitButton.addEventListener('click', function() {
    //M1SLAVIERO/CLEYTON     LBIMJW SDUGRUAD 2403 085Y011A0047 147>1181226084BAD 000000000000029577001529534600      5640024474         0
   
   
-  var split = qrcode.split(" ");
-  var qrsplit = [];
-  var iRes=0;
-  for(var i=0;i<split.length;i++){
-  	if (split[i]!=""){
-  		qrsplit[iRes]= split[i];
-  		iRes++;
-  	}
-  }
-  
-  //var qrsplit = qrcode.split(" ");
-  var from = qrsplit[2].substring(0,3);
-  var to = qrsplit[2].substring(3,6);
-  var dir = from+">"+to;
-  var numeroVoo = qrsplit[3];
-  var seat = qrsplit[4].substring(4,8);
-  var seq = qrsplit[4].substring(9,12);
-  
-  config = { 'dir':dir,
-              'numeroVoo':numeroVoo,
-              'seat':seat,
-              'seq':seq,
-              'icao':icao[from]
-  } ;
+    var split = qrcode.split(" ");
+    var qrsplit = [];
+    var iRes=0;
+    for(var i=0;i<split.length;i++){
+    	if (split[i]!=""){
+    		qrsplit[iRes]= split[i];
+    		iRes++;
+    	}
+    }
+    
+    //var qrsplit = qrcode.split(" ");
+    var from = qrsplit[2].substring(0,3);
+    var to = qrsplit[2].substring(3,6);
+    var dir = from+">"+to;
+    var numeroVoo = qrsplit[3];
+    var seat = qrsplit[4].substring(4,8);
+    var seq = qrsplit[4].substring(9,12);
+    
+    config = { 'dir':dir,
+                'numeroVoo':numeroVoo,
+                'seat':seat,
+                'seq':seq,
+                'icao':icao[from]
+    } ;
   
   } else{
 
   config = {
     'numeroVoo': document.getElementById('numeroVoo').value,
     'icao': document.getElementById('icao').value,
+    'dir':'indisp.',
+    'seat':'0',
+    'seq':'0'
   };
   
   } 
