@@ -166,7 +166,6 @@ submitButton.addEventListener('click', function() {
    // flight direction 
    //M1SLAVIERO/CLEYTON     LBIMJW SDUGRUAD 2403 085Y011A0047 147>1181226084BAD 000000000000029577001529534600      5640024474         0
   
-  
     var split = qrcode.split(" ");
     var qrsplit = [];
     var iRes=0;
@@ -195,9 +194,9 @@ submitButton.addEventListener('click', function() {
   } else{
 
   config = {
-    'numeroVoo': document.getElementById('numeroVoo').value,
-    'icao': document.getElementById('icao').value,
-    'dir':'indisp.',
+    'numeroVoo': '0000',
+    'icao': 'aaaa',
+    'dir':'ind',
     'seat':'0',
     'seq':'0'
   };
