@@ -175,6 +175,10 @@ submitButton.addEventListener('click', function() {
     var seat = qrsplit[4].substring(4,8);
     var seq = qrsplit[4].substring(9,12);
     
+    
+    console.log(from);
+    console.log(icao[from]);
+    
     config = { 'dir':dir,
                 'numeroVoo':numeroVoo,
                 'seat':seat,
