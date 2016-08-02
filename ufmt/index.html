@@ -22,7 +22,8 @@
       </div>
       <div class='listas'>
         <h4> Listas </h4>
-        <a href='so/listas/lista1SO.pdf'>Lista 1.</a> <del><strong>Data de entrega: 20/07/2016 12:00:00 GMT-4</strong>, via e-mail, usando o código <strong>L1SO20161</strong> no assunto.</del><br>
+        <a href='so/listas/lista1SO.pdf'>Lista 1.</a> <del><strong>Data de entrega: 20/07/2016 12:00:00 GMT-4</strong>, via e-mail, usando o código <strong>L1SO20161</strong> no assunto.</del> <strong><a href='so/listas/L1SO20161-notas.pdf'>NOTAS (por RGA)</a></strong> 
+        <br>
         <a href='so/listas/lista_estudos_1SO.pdf'>Lista de Estudos 1.</a> 
       </div>
       <div class='provas'>
@@ -61,6 +62,34 @@
       </div>
     </article>
     <hr>
+  </div>
+  <div id='divForm'>
+    <form id='fContato' method='GET' action='index.php'>
+        Formulário de contato
+        Nome:
+        e-mail:
+        
+        <fieldset >
+            <legend>Formulario</legend>
+            <label for='assunto'>Assunto:</label><input name='assunto' type='password' maxlength='15' placeholder='nome@email.com'/>
+            <br>
+            <textarea cols='40' rows='4' placeholder='aallala' ></textarea>
+            <input name='opcao' id='opcao1' type='radio'> <label for='opcao1'>Opção 1</label>
+            <input name='opcao' type='radio'> Opção 2
+            <br>
+            <select name='select'>
+              <optgroup label='TESTE'>
+              <option value='1'>A</option>
+              <option value='2' selected >B</option>
+              </optgroup>
+            </select>
+            <input type='reset' value='RESETAR'>
+            <br><br>
+            Mensagem:
+        </fieldset>
+
+    </form>
+
   </div>
 </body>
 </html>
