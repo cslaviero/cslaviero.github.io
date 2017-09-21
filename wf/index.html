@@ -87,6 +87,7 @@
 		}
 
 		function doPostsRequest(){
+			console.log("entrando em post");
 			 FB.api("/",'POST',{batch:[
 			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
 			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1",'depends_on':'get_page_ids'}]},
@@ -104,6 +105,7 @@
 						var name = response.data[i].name;						
 						updates[id]={'name':name};
 					}
+					console.log("paginas capturadas");
 					doPostsRequest();
 			});
 		}
@@ -157,7 +159,6 @@
 
 				document.getElementById("precisa_logar").style='display:none';
 				getPages();
-
 			});
 		} else {
 			console.log('User cancelled login or did not fully authorize.');
@@ -167,7 +168,7 @@
 	// Only works after `FB.init` is called
 		function myFacebookLogin() {
 		  FB.login(success, {scope: 'manage_pages,pages_show_list'});
-		  getPages();
+		  
 		}
 </script>
 
