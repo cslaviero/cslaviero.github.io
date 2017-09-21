@@ -1,5 +1,14 @@
+@font-face{
+	font-family: FjallaOne;
+	src: url("/fonts/Fjalla_One/FjallaOne-Regular.ttf");
+}
+@font-face{
+	font-family: Signika;
+	src: url("/fonts/Signika/Signika-Regular.ttf");
+}
+
 body{
-	background-color:lightgray;
+	background-color:rgb(240,240,240);
 }
 
 
@@ -22,8 +31,14 @@ div.updates{
 
 #title{
 	margin-bottom:2px;
+	font-family: FjallaOne;
+	font-variant: small-caps;
 }
 
+h2{
+	font-family: FjallaOne;
+	font-variant: small-caps;	
+}
 .green{
 	background-color:rgb(59,229,131);
 }

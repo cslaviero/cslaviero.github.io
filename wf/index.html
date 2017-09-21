@@ -122,7 +122,7 @@
 		function testLogin(){
 			FB.getLoginStatus(function(r){
 				if(r.status=='connected'){
-					document.getElementById("divLogado").style='display:block';
+					document.getElementById("divLogado").setAttribute('style','display:block');
 					console.log('Opa, vejamos os últimos updates...s ');
 					FB.api('/me', function(response) {
 						
@@ -131,7 +131,8 @@
 					});
 					
 				}else{
-					document.getElementById("precisa_logar").style='display:block';
+					console.log("entrou aqui");
+					document.getElementById("precisa_logar").setAttribute('style','display:block');
 				}
 			});
 		}	
@@ -167,7 +168,7 @@
 			FB.api('/me', function(response) {
 				console.log('Bom te ver, ' + response.name + '.');
 
-				document.getElementById("precisa_logar").style='display:none';
+				document.getElementById("precisa_logar").setAttribute('style','display:none');
 				getPages();
 			});
 		} else {
@@ -178,6 +179,7 @@
 	// Only works after `FB.init` is called
 		function myFacebookLogin() {
 		  FB.login(success, {scope: 'manage_pages,pages_show_list'});
+
 		  
 		}
 </script>
@@ -185,11 +187,11 @@
 </head>
 <body>
 	
-	<h1 id='title'> Super duper verificador de updates do FB</h1>
-	<span>v.001</span><br><br>
-	<div id='precisa_logar' >
+	<h1 id='title'>The FB update checker</h1>
+	<span>v.002</span><br><br>
+	<div id='precisa_logar' style='display:none' >
 	<span>Xi, parece que você precisa logar antes...</span>
-	<button id='botaoLogin'  onclick="myFacebookLogin()">Logar no Facebook</button>
+	<button id='botaoLogin' onclick="myFacebookLogin()">Logar no Facebook</button>
 	</div>
 
 	<div id='divLogado' style='display:none'> </div>
