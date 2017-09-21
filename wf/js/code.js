@@ -1,8 +1,10 @@
 function getDaysPassed(time){
-
-	var endDate = new Date();
-	var startDate = new Date (time);
-	var delta = (endDate.getTime() - startDate.getTime()) / 1000;
+	
+	
+	var endDate = moment(new Date());
+	var startDate = moment(time);
+	
+	var delta = (endDate - startDate) / 1000;
 
 			// calculate (and subtract) whole days
 			var days = Math.floor(delta / 86400);
@@ -22,12 +24,3 @@ function getDaysPassed(time){
 
 			return [days,hours,minutes,seconds];
 		}
-function addToIds(id,p,v){
-	console.log("addToIds"+id+" "+p+" "+v);
-	for(var i = 0;i<ids.length;i++){
-		if(ids[i].id==id){
-			ids[i][p]=v;
-			break;
-		}
-	}
-}

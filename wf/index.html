@@ -3,6 +3,7 @@
 <head>
 	<title>Verificador de Atualização de suas páginas no Facebook</title>
 	<!-- <script src ='js/jquery.js'></script> -->
+	<script src="js/moment.js"></script>
 	<script src='js/code.js'></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script>
@@ -72,28 +73,29 @@
 		var rs;
 		function processResult(rs){
 			var json =JSON.parse(rs);
-			console.log("json:");
 			console.log(json);
 			var keys = Object.keys(json);
-			console.log("keys");
-			console.log(keys);
 			keys.sort();
-			console.log('updates');
 			for(var i=0;i<keys.length;i++){
 				console.log(keys[i]);
 				var id = keys[i];
 				var data = json[id].data[0];
-				var last_updated = data.created_time;
+
+				var last_updated = data.created_time;				
 				var arrTime = getDaysPassed(last_updated);
 				updates[id]['last_updated']=last_updated;
 				updates[id]['arrTime']= arrTime;
+				console.log(arrTime);
 				updates[id]['id_message']= data.id;
-				updates[id]['message']=data.message;
+				if(data.message==undefined){
+					updates[id]['message']=data.story;
+				}else{
+					updates[id]['message']=data.message;
+				}
 
 			}
 		}
-
-		function doPostsRequest(){
+		function doPostsRequest(up){
 			
 			 FB.api("/",'POST',{batch:[
 			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
@@ -101,7 +103,7 @@
 			 						  function(response){
 
 			 						  	processResult(response[1].body);
-			 						  	mountPage(updates);
+			 						  	mountPage(up);
 			 						  });
 		}
 
@@ -110,11 +112,10 @@
 			FB.api('/me/accounts',function(response){
 					for (var i = 0;i<response.data.length;i++){
 						var id = response.data[i].id;
-						var name = response.data[i].name;						
-						updates[id]={'name':name};
+						var name = response.data[i].name;	
+						updates[String(id)]={'name':name};
 					}
-					
-					doPostsRequest();
+					doPostsRequest(updates);
 			});
 		}
 
@@ -139,7 +140,8 @@
 
 		window.fbAsyncInit = function() {
 			FB.init({
-				appId            : '799075846938489',
+				// appId            : '799075846938489',
+				appId:'344601849315421',
 				autoLogAppEvents : true,
 				xfbml            : true,
 				version          : 'v2.10',
