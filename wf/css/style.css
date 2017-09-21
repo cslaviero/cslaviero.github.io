@@ -18,6 +18,10 @@ div.updates{
 
 }
 
+#title{
+	margin-bottom:2px;
+}
+
 .green{
 	background-color:rgb(59,229,131);
 }
