@@ -153,7 +153,10 @@
 			console.log('Welcome!  Fetching your information.... ');
 			FB.api('/me', function(response) {
 				console.log('Bom te ver, ' + response.name + '.');
+
+				document.getElementById("precisa_logar").style='display:none';
 				getPages();
+
 			});
 		} else {
 			console.log('User cancelled login or did not fully authorize.');
@@ -169,6 +172,7 @@
 
 </head>
 <body>
+	<div id="fb-root"></div>
 	<h1 id='title'> Super duper verificador de updates do FB</h1>
 	<span> A versão pro Instagram está saindo...</span><br><br>
 	<div id='precisa_logar' style='display:none'>
