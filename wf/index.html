@@ -75,8 +75,12 @@
 			console.log("json:");
 			console.log(json);
 			var keys = Object.keys(json);
+			console.log("keys");
+			console.log(keys);
 			keys.sort();
+			console.log('updates');
 			for(var i=0;i<keys.length;i++){
+				console.log(keys[i]);
 				var id = keys[i];
 				var data = json[id].data[0];
 				var last_updated = data.created_time;
@@ -84,7 +88,8 @@
 				updates[id]['last_updated']=last_updated;
 				updates[id]['arrTime']= arrTime;
 				updates[id]['id_message']= data.id;
-				updates[id]['message']=data.message;				
+				updates[id]['message']=data.message;
+
 			}
 		}
 
