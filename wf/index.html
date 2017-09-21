@@ -40,7 +40,7 @@
 			var span_time_passed = document.createElement('span');
 			
 			h3.innerHTML = name;
-			p_message.innerHTML= message;
+			p_message.innerHTML= "Texto do post:"+message;
 			span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString()+"<br>";
 			span_time_passed.innerHTML = arrTime[0]+"dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
 
@@ -56,8 +56,6 @@
 					}					
 				}
 			}
-
-			
 			div.appendChild(h3);
 			div.appendChild(p_message);
 			div.appendChild(span_time_updated);
@@ -65,7 +63,6 @@
 			div_pag.appendChild(div);
 		}		
 	}
-
 		var updates = [];
 
 		var rs;
@@ -83,7 +80,6 @@
 				updates[id]['arrTime']= arrTime;
 				updates[id]['id_message']= data.id;
 				updates[id]['message']=data.message;
-
 			}
 		}
 
@@ -102,10 +98,8 @@
 			FB.api('/me/accounts',function(response){
 					for (var i = 0;i<response.data.length;i++){
 						var id = response.data[i].id;
-						var name = response.data[i].name;
-						console.log('id 1: '+response.data[i].id);
+						var name = response.data[i].name;						
 						updates[id]={'name':name};
-						//document.getElementById('div_pag').innerHTML+= "<div id='"+id+"'><h3>"+name+"</h3></div>";					
 					}
 					doPostsRequest();
 			});
@@ -115,16 +109,15 @@
 			FB.getLoginStatus(function(r){
 				if(r.status=='connected'){
 					document.getElementById("divLogado").style='display:block';
-					console.log('Welcome!  Fetching your information.... ');
+					console.log('Opa, vejamos os últimos updates...s ');
 					FB.api('/me', function(response) {
-						console.log(response);
+						
 						document.getElementById("divLogado").innerHTML= 'Bom te ver, ' + response.name + '.';
 						getPages();
 					});
-
 					
 				}else{
-					document.getElementById("botaoLogin").style='display:block';
+					document.getElementById("precisa_logar").style='display:block';
 				}
 			});
 		}	
@@ -164,8 +157,6 @@
 		}
 	}
 
-
-
 	// Only works after `FB.init` is called
 		function myFacebookLogin() {
 		  FB.login(success, {scope: 'manage_pages,pages_show_list'});
@@ -175,7 +166,13 @@
 
 </head>
 <body>
-	<button id='botaoLogin' style='display:none' onclick="myFacebookLogin()">Login with Facebook</button>
+	<h1> Super duper verificador de updates do FB</h1>
+	<span> A versão pro Instagram está saindo...</span><br><br>
+	<div id='precisa_logar' style='display:none'>
+	<span>Xi, parece que você precisa logar antes...</span>
+	<button id='botaoLogin'  onclick="myFacebookLogin()">Logar no Facebook</button>
+	</div>
+
 	<div id='divLogado' style='display:none'> </div>
 	<div id='div_pag'><h2>Suas páginas:</h2> <span id='span_carregando'>Aguarde, carregando...</span> </div>
 

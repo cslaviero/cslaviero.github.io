@@ -3,6 +3,13 @@
 
 /*classes que mudam de acordo com a resposta de quanto tempo passou dsde a última atualização*/
 
+.container {
+  display: flex;
+  justify-content: center;
+}
+.center {
+  width: 800px;
+}
 
 div.updates{
 	border:2px solid gray;
