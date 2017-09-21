@@ -83,6 +83,8 @@
 				updates[id]['arrTime']= arrTime;
 				updates[id]['id_message']= data.id;
 				updates[id]['message']=data.message;
+				console.log(updates[id]['last_updated']);
+				console.log(data.created_time);
 			}
 		}
 
@@ -176,7 +178,7 @@
 <body>
 	
 	<h1 id='title'> Super duper verificador de updates do FB</h1>
-	<span> A versão pro Instagram está saindo...</span><br><br>
+	<span>v.001</span><br><br>
 	<div id='precisa_logar' >
 	<span>Xi, parece que você precisa logar antes...</span>
 	<button id='botaoLogin'  onclick="myFacebookLogin()">Logar no Facebook</button>
