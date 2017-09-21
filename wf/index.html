@@ -9,8 +9,7 @@
 
 	function mountPage(u){
 		//get All ids and create div's
-		console.log("u");
-		console.log(u);
+		
 		var div_pag = document.getElementById('div_pag');
 		
 		var k=[];
@@ -73,6 +72,7 @@
 		var rs;
 		function processResult(rs){
 			var json =JSON.parse(rs);
+			console.log("json:");s
 			console.log(json);
 			var keys = Object.keys(json);
 			keys.sort();
@@ -89,15 +89,13 @@
 		}
 
 		function doPostsRequest(){
-			console.log("entrando em post");
+			
 			 FB.api("/",'POST',{batch:[
 			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
 			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1",'depends_on':'get_page_ids'}]},
 			 						  function(response){
-			 						  	console.log(response);
-			 						  	console.log(response[1].body);
-			 						  	console.log("updates");
-			 						  	console.log(updates);
+
+			 						  	processResult(response[1].body);
 			 						  	mountPage(updates);
 			 						  });
 		}
@@ -110,7 +108,7 @@
 						var name = response.data[i].name;						
 						updates[id]={'name':name};
 					}
-					console.log("paginas capturadas");
+					
 					doPostsRequest();
 			});
 		}
