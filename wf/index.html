@@ -40,7 +40,10 @@
 			var span_time_passed = document.createElement('span');
 			
 			h3.innerHTML = name;
-			p_message.innerHTML= "Texto do post:"+message;
+			if (message=="undefined"){
+				message = "Nenhum texto. (um compartilhamento ou RT, talvez?";
+			}
+			p_message.innerHTML= "Texto do post: "+message;
 			span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
 			span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
 
