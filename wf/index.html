@@ -9,6 +9,8 @@
 
 	function mountPage(u){
 		//get All ids and create div's
+		console.log("u");
+		console.log(u);
 		var div_pag = document.getElementById('div_pag');
 		
 		var k=[];
@@ -82,9 +84,7 @@
 				updates[id]['last_updated']=last_updated;
 				updates[id]['arrTime']= arrTime;
 				updates[id]['id_message']= data.id;
-				updates[id]['message']=data.message;
-				console.log(updates[id]['last_updated']);
-				console.log(data.created_time);
+				updates[id]['message']=data.message;				
 			}
 		}
 
