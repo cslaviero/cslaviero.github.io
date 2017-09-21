@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Verificador de Atualização de suas páginas no Facebook</title>
+	<!-- <script src ='js/jquery.js'></script> -->
+	<script src='js/code.js'></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script>
+
+	function mountPage(u){
+		//get All ids and create div's
+		var div_pag = document.getElementById('div_pag');
+		
+		var k=[];
+		for (v in u) {
+		  if (u.hasOwnProperty(v)) {
+		    k.push(v);
+		  }
+		}
+
+		k.sort();
+		
+		div_pag.removeChild(document.getElementById('span_carregando'));
+		for (var i=0;i<k.length;i++){
+			var id =k[i];
+			var name = u[id].name;
+			var created_time = u[id].created_time;
+			var last_updated = u[id].last_updated;
+			var arrTime = u[id].arrTime;
+			var message = u[id].message;
+			var id_message = u[id].id_message;
+			var seconds_last_update = u[id].seconds_last_update;
+
+			//now let's build it!
+
+			var div = document.createElement('div');
+			var h3 = document.createElement('h3');
+			var p_message = document.createElement('p');
+			var span_time_updated = document.createElement('span');
+			var span_time_passed = document.createElement('span');
+			
+			h3.innerHTML = name;
+			p_message.innerHTML= message;
+			span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString()+"<br>";
+			span_time_passed.innerHTML = arrTime[0]+"dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
+
+			//addClasses
+			if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])<=12){
+				div.setAttribute('class','green updates');
+			}else{
+				if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])>12 && parseInt(arrTime[1])<=24){
+					div.setAttribute('class','yellow updates');
+				}else{
+					if(parseInt(arrTime[0])>0){
+						div.setAttribute('class','red updates');
+					}					
+				}
+			}
+
+			
+			div.appendChild(h3);
+			div.appendChild(p_message);
+			div.appendChild(span_time_updated);
+			div.appendChild(span_time_passed);
+			div_pag.appendChild(div);
+		}		
+	}
+
+		var updates = [];
+
+		var rs;
+		function processResult(rs){
+			var json =JSON.parse(rs);
+			console.log(json);
+			var keys = Object.keys(json);
+			keys.sort();
+			for(var i=0;i<keys.length;i++){
+				var id = keys[i];
+				var data = json[id].data[0];
+				var last_updated = data.created_time;
+				var arrTime = getDaysPassed(last_updated);
+				updates[id]['last_updated']=last_updated;
+				updates[id]['arrTime']= arrTime;
+				updates[id]['id_message']= data.id;
+				updates[id]['message']=data.message;
+
+			}
+		}
+
+		function doPostsRequest(){
+			 FB.api("/",'POST',{batch:[
+			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
+			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1",'depends_on':'get_page_ids'}]},
+			 						  function(response){
+			 						  	processResult(response[1].body);
+			 						  	mountPage(updates);
+			 						  });
+		}
+
+		var ids = [];
+		function getPages(){
+			FB.api('/me/accounts',function(response){
+					for (var i = 0;i<response.data.length;i++){
+						var id = response.data[i].id;
+						var name = response.data[i].name;
+						console.log('id 1: '+response.data[i].id);
+						updates[id]={'name':name};
+						//document.getElementById('div_pag').innerHTML+= "<div id='"+id+"'><h3>"+name+"</h3></div>";					
+					}
+					doPostsRequest();
+			});
+		}
+
+		function testLogin(){
+			FB.getLoginStatus(function(r){
+				if(r.status=='connected'){
+					document.getElementById("divLogado").style='display:block';
+					console.log('Welcome!  Fetching your information.... ');
+					FB.api('/me', function(response) {
+						console.log(response);
+						document.getElementById("divLogado").innerHTML= 'Bom te ver, ' + response.name + '.';
+						getPages();
+					});
+
+					
+				}else{
+					document.getElementById("botaoLogin").style='display:block';
+				}
+			});
+		}	
+
+	window.onload = function(){
+
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId            : '799075846938489',
+				autoLogAppEvents : true,
+				xfbml            : true,
+				version          : 'v2.10'
+			});
+			FB.AppEvents.logPageView();
+			testLogin();
+		};
+
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "http://connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+	}
+
+	function success(response){
+		if (response.authResponse) {
+			console.log('Welcome!  Fetching your information.... ');
+			FB.api('/me', function(response) {
+				console.log('Bom te ver, ' + response.name + '.');
+				getPages();
+			});
+		} else {
+			console.log('User cancelled login or did not fully authorize.');
+		}
+	}
+
+
+
+	// Only works after `FB.init` is called
+		function myFacebookLogin() {
+		  FB.login(success, {scope: 'manage_pages,pages_show_list'});
+		  //doThings();
+		}
+</script>
+
+</head>
+<body>
+	<button id='botaoLogin' style='display:none' onclick="myFacebookLogin()">Login with Facebook</button>
+	<div id='divLogado' style='display:none'> </div>
+	<div id='div_pag'><h2>Suas páginas:</h2> <span id='span_carregando'>Aguarde, carregando...</span> </div>
+
+</body>
+</html>

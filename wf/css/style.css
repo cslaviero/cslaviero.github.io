@@ -1,0 +1,22 @@
+
+
+
+/*classes que mudam de acordo com a resposta de quanto tempo passou dsde a última atualização*/
+
+
+div.updates{
+	border:2px solid gray;
+	width: 100%;
+	height:150px;
+
+}
+
+.green{
+	background-color:rgb(59,229,131);
+}
+.yellow{
+	background-color:rgb(232,225,119);
+}
+.red{
+	background-color:rgb(255,118,144);
+}
