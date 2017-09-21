@@ -95,7 +95,7 @@
 			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1",'depends_on':'get_page_ids'}]},
 			 						  function(response){
 			 						  	console.log(response);
-			 						  	response[1].body);
+			 						  	console.log(response[1].body);
 			 						  	console.log("updates");
 			 						  	console.log(updates);
 			 						  	mountPage(updates);
