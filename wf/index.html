@@ -10,7 +10,8 @@
 
 	function mountPage(u){
 		//get All ids and create div's
-		
+		var divs = {};
+		var divs_no_time=[];
 		var div_pag = document.getElementById('div_pag');
 		
 		var k=[];
@@ -19,19 +20,19 @@
 		    k.push(v);
 		  }
 		}
-
 		k.sort();
 		
 		div_pag.removeChild(document.getElementById('span_carregando'));
 		for (var i=0;i<k.length;i++){
 			var id =k[i];
 			var name = u[id].name;
-			var created_time = u[id].created_time;
 			var last_updated = u[id].last_updated;
 			var arrTime = u[id].arrTime;
 			var message = u[id].message;
 			var id_message = u[id].id_message;
-			var seconds_last_update = u[id].seconds_last_update;
+			console.log("last_updated"+last_updated);
+			if (last_updated !=undefined){
+			var seconds_last_update = Math.floor(u[id].seconds_last_update/1000);}
 
 			//now let's build it!
 
@@ -41,32 +42,95 @@
 			var span_time_updated = document.createElement('span');
 			var span_time_passed = document.createElement('span');
 			
-			h3.innerHTML = name;
+			h3.innerHTML = "<a target='_blank' href='https://www.facebook.com/profile.php/?id="+id+"'>"+name+"</a>";
 			if (message == undefined){
-				message = "Nenhum texto. (um compartilhamento ou RT, talvez?";
-			}
-			p_message.innerHTML= "Texto do post: "+message;
-			span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
-			span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
+				message = "Nenhum texto. (um compartilhamento ou RT, talvez?)";
+					p_message.innerHTML = "<p> Texto do post: "+message+"</p>";
+				span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
+				span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
 
-			//addClasses
-			if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])<=12){
-				div.setAttribute('class','green updates');
-			}else{
-				if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])>12 && parseInt(arrTime[1])<=24){
-					div.setAttribute('class','yellow updates');
+				//addClasses
+				if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])<=12){
+					div.setAttribute('class','green updates');
 				}else{
-					if(parseInt(arrTime[0])>0){
-						div.setAttribute('class','red updates');
-					}					
+					if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])>12 && parseInt(arrTime[1])<=24){
+						div.setAttribute('class','yellow updates');
+					}else{
+						if(parseInt(arrTime[0])>0){
+							div.setAttribute('class','red updates');
+						}					
+					}
 				}
-			}
+			}else{
+				if(message=='none'){
+					message='<p> Nenuma postagem foi feita.</p>';
+					p_message.innerHTML = message;
+					span_time_updated.innerHTML = "";
+					span_time_passed.innerHTML = "";
+				div.setAttribute('class','updates');
+			
+				}else{
+
+					p_message.innerHTML = "Texto do post: "+message;
+				span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
+				span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
+
+				//addClasses
+				if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])<=12){
+					div.setAttribute('class','green updates');
+					
+				}else{
+					if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])>12 && parseInt(arrTime[1])<=24){
+						div.setAttribute('class','yellow updates');
+					}else{
+						if(parseInt(arrTime[0])>0){
+							div.setAttribute('class','red updates');
+						}					
+					}
+				}
+				}
+			}			
+			
 			div.appendChild(h3);
 			div.appendChild(p_message);
 			div.appendChild(span_time_updated);
 			div.appendChild(span_time_passed);
-			div_pag.appendChild(div);
+
+			if(last_updated==undefined)
+			{
+				console.log("entrou");
+				divs_no_time.push(div);
+			}else{
+				
+				divs[seconds_last_update]=div;
+			}
 		}		
+		
+		console.log(divs);
+
+		var k = [];
+		for (v in divs) {
+		  if (divs.hasOwnProperty(v)) {
+		    k.push(v);
+		  }
+		}
+		k.sort(function(a,b){
+			a = parseInt(a);
+			b = parseInt(b);
+			return a<b ?1 : a>b ? -1 : 0;
+		});
+		console.log(k);
+		
+		for (var i=0;i<k.length;i++){
+			var sec = k[i];			
+			console.log(divs[sec]);
+
+			div_pag.appendChild(divs[sec]);	
+		}
+		for (var i=0;i<divs_no_time.length;i++){
+			div_pag.appendChild(divs_no_time[i]);		
+		}
+
 	}
 		var updates = [];
 
@@ -77,40 +141,45 @@
 			var keys = Object.keys(json);
 			keys.sort();
 			for(var i=0;i<keys.length;i++){
-				console.log(keys[i]);
+				//console.log(keys[i]);
 				var id = keys[i];
-				var data = json[id].data[0];
-
-				var last_updated = data.created_time;				
-				var arrTime = getDaysPassed(last_updated);
-				updates[id]['last_updated']=last_updated;
-				updates[id]['arrTime']= arrTime;
-				console.log(arrTime);
-				updates[id]['id_message']= data.id;
-				if(data.message==undefined){
-					updates[id]['message']=data.story;
+				
+				if (json[id].data.length > 0){
+					var data = json[id].data[0];
+					var last_updated = data.created_time;				
+					var arrTime = getDaysPassed(last_updated);
+					updates[id]['last_updated']=last_updated;
+					updates[id]['arrTime']= arrTime;
+					updates[id]['seconds_last_update'] = moment(new Date) - moment(last_updated);
+					updates[id]['id_message']= data.id;
+					if(data.message==undefined){
+						updates[id]['message']=data.story;
+					}else{
+						updates[id]['message']=data.message;
+					}
 				}else{
-					updates[id]['message']=data.message;
+					updates[id].message = 'none'; // vai indicar que não tem post!
 				}
-
+				
 			}
 		}
+		var resp;
 		function doPostsRequest(up){
 			
 			 FB.api("/",'POST',{batch:[
 			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
 			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1}",'depends_on':'get_page_ids'}]},
 			 						  function(response){
-			 						  	if (response[1].body !=undefined){
+			 						  	// if (response[1].body !=undefined){
 
-			 						  	
 
+			 						  		resp = response[1].body;
 				 						  	processResult(response[1].body);
 				 						  	mountPage(up);
 
-			 						  	}else{
-			 						  		d
-			 						  	}
+			 						  	// }else{
+			 						  	// 	d
+			 						  	// }
 			 						  });
 		}
 
@@ -148,12 +217,11 @@
 
 		window.fbAsyncInit = function() {
 			FB.init({
-				appId            : '799075846938489',
-				
+				appId            : '344601849315421',
 				autoLogAppEvents : true,
 				xfbml            : true,
 				version          : 'v2.10',
-				channelUrl: 'http://cslaviero.github.io/wf/channel.html'
+				// channelUrl: 'http://cslaviero.github.io/wf/channel.html'
 			});
 			FB.AppEvents.logPageView();
 			testLogin();
