@@ -8,9 +8,29 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script>
 
+	function keySort(o){
+				var k = [];
+		for (v in o) {
+		  if (o.hasOwnProperty(v)) {
+		    k.push(v);
+		  }
+		}
+		function comp (a,b){
+			a = parseInt(a);
+			b = parseInt(b);
+			return a<b ?1 : a>b ? -1 : 0;
+		}
+
+		k.sort(comp);
+		return k;
+	}
+
 	function mountPage(u){
 		//get All ids and create div's
 		var divs = {};
+		var divs_green = {};
+		var divs_yellow = {};
+		var divs_red = {};
 		var divs_no_time=[];
 		var div_pag = document.getElementById('div_pag');
 		
@@ -78,7 +98,7 @@
 				//addClasses
 				if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])<=12){
 					div.setAttribute('class','green updates');
-					
+
 				}else{
 					if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])>12 && parseInt(arrTime[1])<=24){
 						div.setAttribute('class','yellow updates');
@@ -96,29 +116,36 @@
 			div.appendChild(span_time_updated);
 			div.appendChild(span_time_passed);
 
-			if(last_updated==undefined)
-			{
-				console.log("entrou");
-				divs_no_time.push(div);
-			}else{
-				
+			if (div.getAttribute('class')=="green updates"){
+				console.log('entrou_green');
+				divs_green[seconds_last_update]=div;
 				divs[seconds_last_update]=div;
+			}else{
+				if (div.getAttribute('class')=="yellow updates"){
+					console.log('entrou_yellow');
+					divs_yellow[seconds_last_update]=div;
+					divs[seconds_last_update]=div;
+				}else{
+					if (div.getAttribute('class')=="red updates"){
+						console.log('entrou_red');
+						divs_red[seconds_last_update]=div;
+						divs[seconds_last_update]=div;
+					}else{
+						if (div.getAttribute('class')=="updates"){
+							divs_no_time.push(div);
+							console.log('entrou_nenhum');
+						}
+					}
+
+				}				
 			}
 		}		
 		
-		console.log(divs);
+		var k = keySort(divs);
+		var kg = keySort(divs_green);
+		var ky = keySort(divs_yellow);
+		var kr = keySort(divs_red);
 
-		var k = [];
-		for (v in divs) {
-		  if (divs.hasOwnProperty(v)) {
-		    k.push(v);
-		  }
-		}
-		k.sort(function(a,b){
-			a = parseInt(a);
-			b = parseInt(b);
-			return a<b ?1 : a>b ? -1 : 0;
-		});
 		console.log(k);
 		
 		for (var i=0;i<k.length;i++){
@@ -160,7 +187,6 @@
 				}else{
 					updates[id].message = 'none'; // vai indicar que não tem post!
 				}
-				
 			}
 		}
 		var resp;
@@ -217,7 +243,7 @@
 
 		window.fbAsyncInit = function() {
 			FB.init({
-				appId            : '799075846938489',
+				appId            : '344601849315421',
 				autoLogAppEvents : true,
 				xfbml            : true,
 				version          : 'v2.10',
@@ -270,7 +296,12 @@
 	</div>
 
 	<div id='divLogado' style='display:none'> </div>
-	<div id='div_pag'><h2>Suas páginas:</h2> <span id='span_carregando'>Aguarde, carregando...</span> </div>
+	<div id='div_pag'><h2>Suas páginas:</h2> <span id='span_carregando'>Aguarde, carregando...</span>
+	<div id='div_green'></div>
+	<div id='div_yellow'></div>
+	<div id='div_red'></div>
+	<div id='div_none'></div>
+	</div>
 	<div id="fb-root"></div>
 
 
