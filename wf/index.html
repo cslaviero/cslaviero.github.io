@@ -8,24 +8,24 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script>
 
-	function keySort(o){
-				var k = [];
-		for (v in o) {
-		  if (o.hasOwnProperty(v)) {
-		    k.push(v);
-		  }
-		}
-		function comp (a,b){
-			a = parseInt(a);
-			b = parseInt(b);
-			return a<b ?1 : a>b ? -1 : 0;
+		function keySort(o){
+			var k = [];
+			for (v in o) {
+				if (o.hasOwnProperty(v)) {
+					k.push(v);
+				}
+			}
+			function comp (a,b){
+				a = parseInt(a);
+				b = parseInt(b);
+				return a<b ?1 : a>b ? -1 : 0;
+			}
+
+			k.sort(comp);
+			return k;
 		}
 
-		k.sort(comp);
-		return k;
-	}
-
-	function mountPage(u){
+		function mountPage(u){
 		//get All ids and create div's
 		var divs = {};
 		var divs_green = {};
@@ -33,12 +33,16 @@
 		var divs_red = {};
 		var divs_no_time=[];
 		var div_pag = document.getElementById('div_pag');
+		var div_green = document.getElementById('div_green');
+		var div_yellow = document.getElementById('div_yellow');
+		var div_red = document.getElementById('div_red');
+		var div_none = document.getElementById('div_none');
 		
 		var k=[];
 		for (v in u) {
-		  if (u.hasOwnProperty(v)) {
-		    k.push(v);
-		  }
+			if (u.hasOwnProperty(v)) {
+				k.push(v);
+			}
 		}
 		k.sort();
 		
@@ -52,7 +56,7 @@
 			var id_message = u[id].id_message;
 			console.log("last_updated"+last_updated);
 			if (last_updated !=undefined){
-			var seconds_last_update = Math.floor(u[id].seconds_last_update/1000);}
+				var seconds_last_update = Math.floor(u[id].seconds_last_update/1000);}
 
 			//now let's build it!
 
@@ -65,7 +69,7 @@
 			h3.innerHTML = "<a target='_blank' href='https://www.facebook.com/profile.php/?id="+id+"'>"+name+"</a>";
 			if (message == undefined){
 				message = "Nenhum texto. (um compartilhamento ou RT, talvez?)";
-					p_message.innerHTML = "<p> Texto do post: "+message+"</p>";
+				p_message.innerHTML = "<p> Texto do post: "+message+"</p>";
 				span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
 				span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
 
@@ -87,13 +91,13 @@
 					p_message.innerHTML = message;
 					span_time_updated.innerHTML = "";
 					span_time_passed.innerHTML = "";
-				div.setAttribute('class','updates');
-			
+					div.setAttribute('class','updates');
+
 				}else{
 
 					p_message.innerHTML = "Texto do post: "+message;
-				span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
-				span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
+					span_time_updated.innerHTML = "Ultimo update: "+(new Date(last_updated)).toLocaleDateString('pt-BR')+"<br>";
+					span_time_passed.innerHTML = arrTime[0]+" dias, "+arrTime[1]+" horas, "+arrTime[2]+" minutos e "+arrTime[3]+"segundo(s) atrás.";
 
 				//addClasses
 				if(parseInt(arrTime[0])==0 && parseInt(arrTime[1])<=12){
@@ -108,66 +112,90 @@
 						}					
 					}
 				}
-				}
-			}			
-			
-			div.appendChild(h3);
-			div.appendChild(p_message);
-			div.appendChild(span_time_updated);
-			div.appendChild(span_time_passed);
+			}
+		}			
 
-			if (div.getAttribute('class')=="green updates"){
-				console.log('entrou_green');
-				divs_green[seconds_last_update]=div;
+		div.appendChild(h3);
+		div.appendChild(p_message);
+		div.appendChild(span_time_updated);
+		div.appendChild(span_time_passed);
+
+		if (div.getAttribute('class')=="green updates"){
+			console.log('entrou_green');
+			divs_green[seconds_last_update]=div;
+			divs[seconds_last_update]=div;
+		}else{
+			if (div.getAttribute('class')=="yellow updates"){
+				console.log('entrou_yellow');
+				divs_yellow[seconds_last_update]=div;
 				divs[seconds_last_update]=div;
 			}else{
-				if (div.getAttribute('class')=="yellow updates"){
-					console.log('entrou_yellow');
-					divs_yellow[seconds_last_update]=div;
+				if (div.getAttribute('class')=="red updates"){
+					console.log('entrou_red');
+					divs_red[seconds_last_update]=div;
 					divs[seconds_last_update]=div;
 				}else{
-					if (div.getAttribute('class')=="red updates"){
-						console.log('entrou_red');
-						divs_red[seconds_last_update]=div;
-						divs[seconds_last_update]=div;
-					}else{
-						if (div.getAttribute('class')=="updates"){
-							divs_no_time.push(div);
-							console.log('entrou_nenhum');
-						}
+					if (div.getAttribute('class')=="updates"){
+						divs_no_time.push(div);
+						console.log('entrou_nenhum');
 					}
+				}
 
-				}				
-			}
-		}		
-		
-		var k = keySort(divs);
-		var kg = keySort(divs_green);
-		var ky = keySort(divs_yellow);
-		var kr = keySort(divs_red);
-
-		console.log(k);
-		
-		for (var i=0;i<k.length;i++){
-			var sec = k[i];			
-			console.log(divs[sec]);
-
-			div_pag.appendChild(divs[sec]);	
+			}				
 		}
-		for (var i=0;i<divs_no_time.length;i++){
-			div_pag.appendChild(divs_no_time[i]);		
-		}
+	}		
 
+	var k = keySort(divs);
+	var kg = keySort(divs_green);
+	var ky = keySort(divs_yellow);
+	var kr = keySort(divs_red);
+
+
+
+	if (kr.length>0){
+		for (var i=0;i<kr.length;i++){
+			var sec = kr[i];
+			div_red.appendChild(divs_red[sec]);	
+		}
+	}else{
+		div_red.innerHTML = '<p> Nenhum resultado.</p>';
 	}
-		var updates = [];
+	if (ky.length>0){
+		for (var i=0;i<ky.length;i++){
+			var sec = ky[i];
+			div_yellow.appendChild(divs_yellow[sec]);	
+		}
+	}else{
+		div_yellow.innerHTML = '<p> Nenhum resultado.</p>';
+	}
+	if (kg.length>0){
 
-		var rs;
-		function processResult(rs){
-			var json =JSON.parse(rs);
-			console.log(json);
-			var keys = Object.keys(json);
-			keys.sort();
-			for(var i=0;i<keys.length;i++){
+		for (var i=0;i<kg.length;i++){
+			var sec = kg[i];	
+			div_green.appendChild(divs_green[sec]);			
+		}
+	}else{
+		div_green.innerHTML = '<p> Nenhum resultado.</p>';
+	}
+
+
+
+
+
+	for (var i=0;i<divs_no_time.length;i++){
+		div_none.appendChild(divs_no_time[i]);		
+	}
+
+}
+var updates = [];
+
+var rs;
+function processResult(rs){
+	var json =JSON.parse(rs);
+	console.log(json);
+	var keys = Object.keys(json);
+	keys.sort();
+	for(var i=0;i<keys.length;i++){
 				//console.log(keys[i]);
 				var id = keys[i];
 				
@@ -192,16 +220,16 @@
 		var resp;
 		function doPostsRequest(up){
 			
-			 FB.api("/",'POST',{batch:[
-			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
-			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1}",'depends_on':'get_page_ids'}]},
-			 						  function(response){
+			FB.api("/",'POST',{batch:[
+				{"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
+				{'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1}",'depends_on':'get_page_ids'}]},
+				function(response){
 			 						  	// if (response[1].body !=undefined){
 
 
 			 						  		resp = response[1].body;
-				 						  	processResult(response[1].body);
-				 						  	mountPage(up);
+			 						  		processResult(response[1].body);
+			 						  		mountPage(up);
 
 			 						  	// }else{
 			 						  	// 	d
@@ -212,12 +240,12 @@
 		var ids = [];
 		function getPages(){
 			FB.api('/me/accounts',function(response){
-					for (var i = 0;i<response.data.length;i++){
-						var id = response.data[i].id;
-						var name = response.data[i].name;	
-						updates[String(id)]={'name':name};
-					}
-					doPostsRequest(updates);
+				for (var i = 0;i<response.data.length;i++){
+					var id = response.data[i].id;
+					var name = response.data[i].name;	
+					updates[String(id)]={'name':name};
+				}
+				doPostsRequest(updates);
 			});
 		}
 
@@ -228,7 +256,7 @@
 					console.log('Opa, vejamos os últimos updates...s ');
 					FB.api('/me', function(response) {
 						
-						document.getElementById("divLogado").innerHTML= 'Bom te ver, ' + response.name + '.';
+						document.getElementById("divLogado").innerHTML= 'Bom te ver, ' + response.name + '. <br><span id="check"> Verifique a atualização das páginas que administra abaixo.</span>';
 						getPages();
 					});
 					
@@ -239,71 +267,73 @@
 			});
 		}	
 
-	window.onload = function(){
+		window.onload = function(){
 
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId            : '344601849315421',
-				autoLogAppEvents : true,
-				xfbml            : true,
-				version          : 'v2.10',
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId            : '344601849315421',
+					autoLogAppEvents : true,
+					xfbml            : true,
+					version          : 'v2.10',
 				// channelUrl: 'http://cslaviero.github.io/wf/channel.html'
 			});
-			FB.AppEvents.logPageView();
-			testLogin();
-		};
+				FB.AppEvents.logPageView();
+				testLogin();
+			};
 
-		(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "http://connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
+			(function(d, s, id){
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {return;}
+				js = d.createElement(s); js.id = id;
+				js.src = "http://connect.facebook.net/en_US/sdk.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
 
-	}
-
-	function success(response){
-		if (response.authResponse) {
-			console.log('Welcome!  Fetching your information.... ');
-			FB.api('/me', function(response) {
-				console.log('Bom te ver, ' + response.name + '.');
-
-				document.getElementById("precisa_logar").setAttribute('style','display:none');
-				getPages();
-			});
-		} else {
-			console.log('User cancelled login or did not fully authorize.');
 		}
-	}
+
+		function success(response){
+			if (response.authResponse) {
+				console.log('Welcome!  Fetching your information.... ');
+				FB.api('/me', function(response) {
+					document.getElementById("divLogado").innerHTML = 'Bom te ver, ' + response.name + '.<br><span id="check"> Verifique a atualização das páginas que administra abaixo.</span>';
+
+					document.getElementById("precisa_logar").setAttribute('style','display:none');
+					getPages();
+				});
+			} else {
+				console.log('User cancelled login or did not fully authorize.');
+			}
+		}
 
 	// Only works after `FB.init` is called
-		function myFacebookLogin() {
-		  FB.login(success, {scope: 'manage_pages,pages_show_list'});
-
-		  
-		}
+	function myFacebookLogin() {
+		FB.login(success, {scope: 'manage_pages,pages_show_list'});
+	}
 </script>
 
 </head>
 <body>
 	
 	<h1 id='title'>The FB update checker</h1>
-	<span>v.002</span><br><br>
+	<span>v0.10</span><br><br>
 	<div id='precisa_logar' style='display:none' >
-	<span>Xi, parece que você precisa logar antes...</span>
-	<button id='botaoLogin' onclick="myFacebookLogin()">Logar no Facebook</button>
+		<span>Xi, parece que você precisa logar antes...</span>
+		<button id='botaoLogin' onclick="myFacebookLogin()">Logar no Facebook</button>
 	</div>
 
 	<div id='divLogado' style='display:none'> </div>
+	<div class="tab">
+		<button class="tablinks active" onclick="showPage(event, 'red')">Mais de 24h</button>
+		<button class="tablinks" onclick="showPage(event, 'yellow')">Entre 12 e 24h</button>
+		<button class="tablinks" onclick="showPage(event, 'green')">Menos de 24h</button>
+		<button class="tablinks" onclick="showPage(event, 'none')">Nunca atualizado</button>
+	</div>
 	<div id='div_pag'><h2>Suas páginas:</h2> <span id='span_carregando'>Aguarde, carregando...</span>
-	<div id='div_green'></div>
-	<div id='div_yellow'></div>
-	<div id='div_red'></div>
-	<div id='div_none'></div>
+		<div id='div_red' style='display:block' class='tabcontent'></div>
+		<div id='div_yellow' class='tabcontent'></div>
+		<div id='div_green' class='tabcontent' ></div>
+		<div id='div_none' class='tabcontent' ></div>
 	</div>
 	<div id="fb-root"></div>
-
-
 </body>
 </html>

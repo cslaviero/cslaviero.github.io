@@ -23,4 +23,21 @@ function getDaysPassed(time){
 			var seconds = Math.floor(delta);
 
 			return [days,hours,minutes,seconds];
-		}
+}
+
+function showPage(evt, color) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    //apague todos
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    //pega os links
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    document.getElementById("div_"+color).style.display = "block";
+    evt.currentTarget.className += " active";
+}
