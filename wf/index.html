@@ -99,11 +99,18 @@
 			
 			 FB.api("/",'POST',{batch:[
 			 						  {"method":"GET", "relative_url":"me/accounts","name":"get_page_ids"},
-			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1",'depends_on':'get_page_ids'}]},
+			 						  {'method':'GET','relative_url':"posts/?ids={result=get_page_ids:data.*.id}&limit=1&access_token={result=get_page_ids:data.*.access_token}",'depends_on':'get_page_ids'}]},
 			 						  function(response){
+			 						  	if (response[1].body !=undefined){
 
-			 						  	processResult(response[1].body);
-			 						  	mountPage(up);
+			 						  	
+
+				 						  	processResult(response[1].body);
+				 						  	mountPage(up);
+
+			 						  	}else{
+			 						  		d
+			 						  	}
 			 						  });
 		}
 
