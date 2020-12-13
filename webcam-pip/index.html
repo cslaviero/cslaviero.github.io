@@ -27,7 +27,7 @@
     // const button2 = document.getElementById('button-enable');
     
     button.addEventListener('click', async () => {    
-        const video= document.getElementById("my-video");
+        const video= document.getElementById("video");
         video.muted = true;
         video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
         video.play();
