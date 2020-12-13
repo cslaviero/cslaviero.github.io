@@ -6,26 +6,46 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Webcam PIP v.0.0.3-alpha</h1>
-    <video controls id= "my-video" src='https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'>
+    <h1>Webcam PIP v.0.0.4-alpha</h1>
+    <!-- <video controls id= "my-video" src='https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'>
     </video>
     <button class="btn btn-primary" id="button">Display Webcam feed</button>
-    <button class="btn btn-primary" id="button-enable">PIP it boi!</button>
+    <button class="btn btn-primary" id="button-enable">PIP it boi!</button> -->
+
+    <video id="video" src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"></video>
+
+<div id="controls">
+	<button id="playButton">Play</button>
+	<button id="pauseButton" hidden>Pause</button>
+	<button id="PiPButton">PiP</button>
+</div> 
+
 </body>
 <script>
-    const button = document.getElementById('button');
-    const button2 = document.getElementById('button-enable');
+    // const button = document.getElementById('button');
+    // const button2 = document.getElementById('button-enable');
     
-    button.addEventListener('click', async () => {    
-        const video= document.getElementById("my-video");
-        video.muted = true;
-        video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.play();
-    });
+    // button.addEventListener('click', async () => {    
+    //     const video= document.getElementById("my-video");
+    //     video.muted = true;
+    //     video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
+    //     video.play();
+    // });
+
     
-    button2.addEventListener('click',async () => {
-            const video= document.getElementById("my-video");
-            await video.requestPictureInPicture().catch(console.error);
-    });
+    // button2.addEventListener('click',() => {
+            // const video= document.getElementById("my-video");
+            // await video.requestPictureInPicture().catch(console.error);
+    // });
+
+    if (video.webkitSupportsPresentationMode && typeof video.webkitSetPresentationMode === "function") {
+	// Toggle PiP when the user clicks the button.
+	    pipButtonElement.addEventListener("click", function(event) {
+		    video.webkitSetPresentationMode(video.webkitPresentationMode === "picture-in-picture" ? "inline" : "picture-in-picture");
+	});
+    }   else {
+	    pipButtonElement.disabled = true;
+    }
+
 </script>
 </html>
