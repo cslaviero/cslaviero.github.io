@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello</h1>
+    <video controls id= "my-video"></video>
+    <button class="btn btn-primary" id="button">Display Webcam feed</button>
+    <button class="btn btn-primary" id="button-enable">PIP it boi!</button>
+</body>
+<script>
+    const button = document.getElementById('button');
+    const button2 = document.getElementById('button-enable');
+    
+    button.addEventListener('click', async () => {    
+        const video= document.getElementById("my-video");
+        video.muted = true;
+        video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.play();
+    });
+    
+    button2.addEventListener('click', () => {
+            const video= document.createElement('video');
+            video.requestPictureInPicture().catch(console.error);
+    });
+</script>
+</html>
