@@ -37,7 +37,8 @@
             // const video= document.getElementById("my-video");
             // await video.requestPictureInPicture().catch(console.error);
     // });
-
+    const video = document.getElementById("video");
+    const pipButtonElement = document.getElementById("PipButton");
     if (video.webkitSupportsPresentationMode && typeof video.webkitSetPresentationMode === "function") {
 	// Toggle PiP when the user clicks the button.
 	    pipButtonElement.addEventListener("click", function(event) {
