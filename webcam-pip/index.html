@@ -22,9 +22,9 @@
         video.play();
     });
     
-    button2.addEventListener('click', () => {
+    button2.addEventListener('click',async () => {
             const video= document.createElement('video');
-            video.requestPictureInPicture().catch(console.error);
+            await video.requestPictureInPicture().catch(console.error);
     });
 </script>
 </html>
