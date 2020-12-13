@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Webcam PIP v.0.0.5-alpha</h1>
+    <h1>Webcam PIP v.0.0.6-alpha</h1>
     <!-- <video controls id= "my-video" src='https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4'>
     </video>
     <button class="btn btn-primary" id="button">Display Webcam feed</button>
@@ -45,7 +45,8 @@
 		    video.webkitSetPresentationMode(video.webkitPresentationMode === "picture-in-picture" ? "inline" : "picture-in-picture");
 	    });
     }   else {
-	    pipButtonElement.disabled = true;
+        pipButtonElement.disabled = true;
+        console.log("not working!");
     }
 
 </script>
