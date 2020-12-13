@@ -32,18 +32,17 @@
     //     video.play();
     // });
 
-    
     // button2.addEventListener('click',() => {
             // const video= document.getElementById("my-video");
             // await video.requestPictureInPicture().catch(console.error);
     // });
     const video = document.getElementById("video");
-    const pipButtonElement = document.getElementById("PipButton");
+    const pipButtonElement = document.getElementById("PiPButton");
     if (video.webkitSupportsPresentationMode && typeof video.webkitSetPresentationMode === "function") {
 	// Toggle PiP when the user clicks the button.
 	    pipButtonElement.addEventListener("click", function(event) {
 		    video.webkitSetPresentationMode(video.webkitPresentationMode === "picture-in-picture" ? "inline" : "picture-in-picture");
-	});
+	    });
     }   else {
 	    pipButtonElement.disabled = true;
     }
